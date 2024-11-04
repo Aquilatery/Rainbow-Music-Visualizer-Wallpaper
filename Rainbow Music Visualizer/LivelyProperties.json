@@ -1,0 +1,90 @@
+{
+  "maxVal": {
+    "max": 99,
+    "min": 0,
+    "text": "Intensity",
+    "type": "slider",
+    "value": 65
+  },
+  "backgroundColor": {
+    "text": "Background",
+    "type": "color",
+    "value": "#000000"
+  },
+  "whiteInside": {
+    "text": "White light inside",
+    "type": "checkbox",
+    "value": true
+  },
+  "cleanLineEnd": {
+    "text": "Clen line end (Don't use with shadow)",
+    "type": "checkbox",
+    "value": false
+  },
+  "interpolate": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Interpolate"
+  },
+  
+  "showHour": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Show Hour"
+  },
+  "policeHour": {
+    "type": "textbox",
+    "value": "Arial",
+    "text": "Hour police"
+  },
+  "hourSize": {
+    "max": 100,
+    "min": 0,
+    "text": "Hour Size",
+    "type": "slider",
+    "value": 10
+  },
+  "xHour": {
+    "max": 100,
+    "min": 0,
+    "text": "X Hour Position",
+    "type": "slider",
+    "value": 20
+  },
+  "yHour": {
+    "max": 100,
+    "min": 0,
+    "text": "Y Hour Position",
+    "type": "slider",
+    "value": 80
+  },
+  "showSecond": {
+    "type": "checkbox",
+    "value": false,
+    "text": "Show Seconds"
+  },
+  "shadow": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Shadow"
+  },
+  "shadowIntensity": {
+    "max": 500,
+    "min": 0,
+    "text": "Shadow Intensity (Need good performance)",
+    "type": "slider",
+    "value": 30
+  },
+  "shadowWithMusic": {
+    "type": "checkbox",
+    "value": true,
+    "text": "The stronger the intensity, the stronger the shadow will be"
+  },
+  "regenerate": {
+    "type": "button",
+    "value": "Regenerate Random Spectre"
+
+  }
+
+  
+}
