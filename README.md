@@ -4,34 +4,37 @@
 
 ### Multiple Parameters :
 
-Intensity : change spectre intensity
+`Intensity` : Change spectre intensity
 
-Background Color : change the backround color (Not work I don't know why)
+`Background Color` : Change the backround color (Not work I don't know why)
 
-White Inside : place a white color at the base of the spectrum
+`White Inside` : Place a white color at the base of the spectrum
 
-Clean Line End : Clean the spectrum ray, better when you don't use shadow
+`Clean Line End` : Clean the spectrum ray, better when you don't use shadow
 
-Interpolate : Do an interpolation of the audio value for more ray
+`Interpolate` : Do an interpolation of the audio value for more ray
 
-Show Hour : Show the hour
+`Show Hour` : Show the hour
 
-Police Hour : Change the hour typeface
+`Police Hour` : Change the hour typeface
 
-Hour Size : Change the hour size
+`Hour Size` : Change the hour size
 
-X and Y Hour Position : Change the hour position on screen
+`X and Y Hour Position` : Change the hour position on screen
 
-Show Seconds : Show the seconds with hour
+`Show Seconds` : Show the seconds with hour
 
-Shadow : Create a shadow colored effect behind the audio spectre
+`12 Hour Clock Format` : Change the clock format to 12 hour
 
-Shadow Intensity : The shadow has more power (Need Performance when high)
+`Shadow` : Create a shadow colored effect behind the audio spectre
 
-Shadow with Music : The shadow has more power when the music is high
+`Shadow Intensity` : The shadow has more power (Need Performance when high)
 
-Regenerate Random Spectre : Regenerate the default spectre when there are no Music
+`Shadow with Music` : The shadow has more power when the music is high
 
+`Regenerate Random Spectre` : Regenerate the default spectre when there are no Music
+
+`Minimal Audio` : Set the minimum audio value required to display the ray
 
 # 
 
