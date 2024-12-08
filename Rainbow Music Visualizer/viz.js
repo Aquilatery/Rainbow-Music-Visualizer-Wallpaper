@@ -1,3 +1,6 @@
+/////////////////////////////////////////
+//          Made by Aprotonix          //
+/////////////////////////////////////////
 let canvas = document.getElementById("canvas");
 let max_height, startPos, vizWidth, midY;
 
@@ -12,10 +15,12 @@ let policeHour = "Arial";
 let hourSize = 1;
 let xHour = 2.0;
 let yHour = 8.0;
+let hour_format12 = false;;
 let showSecond = false;
 let shadow = true;
 let shadowIntensity = 30;
 let shadowWithMusic = true;
+let minimalAudio = 0.005;
 
 
 let ctx = canvas.getContext("2d");
@@ -104,6 +109,9 @@ function livelyPropertyListener(name, val) {
     case "showSecond":
       showSecond = val;
       break;
+    case "format12":
+        hour_format12 = val;
+        break;
     case "shadow":
       shadow = val;
       break;
@@ -126,6 +134,9 @@ function livelyPropertyListener(name, val) {
     case "regenerate":
       generateRandomAudio();
       break;
+    case "minimalAudioValue":
+      minimalAudio = val/1000;
+      break;
   }
 }
 
@@ -135,6 +146,7 @@ function interpolateAudioArray(audioArray) {
 
   for (let i = 0; i < audioArray.length - 1; i++) {
  
+
     interpolatedArray.push(audioArray[i]);
     const average = (audioArray[i] + audioArray[i + 1]) / 2;
     interpolatedArray.push(average);
@@ -145,17 +157,42 @@ function interpolateAudioArray(audioArray) {
   return interpolatedArray;
 }
 
+function clearNoiseArray(audioArray) {
+
+
+  for (let i = 0; i < audioArray.length - 1; i++) {
+      if (audioArray[i]<minimalAudio) {
+        audioArray[i] = 0;
+      }
+  }
+  return audioArray;
+
+}
+
 function getCurrentTime() {
   const now = new Date();
-  const hours = String(now.getHours()).padStart(2, '0');
+  let hours = now.getHours();
   const minutes = String(now.getMinutes()).padStart(2, '0');
-  if (showSecond) {const seconds = String(now.getSeconds()).padStart(2, '0');
-    return `${hours}:${minutes}:${seconds}`;
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+  
+  let period = ""; // Pour indiquer AM ou PM en format 12 heures
+
+  if (hour_format12) {
+    period = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12; // Convertit 0h à 12h et 13h à 1h
   }
-  else {
-    return `${hours}:${minutes}`
+
+  hours = String(hours).padStart(2, '0'); // Ajout du zéro si nécessaire
+
+  if (showSecond) {
+    return hour_format12
+      ? `${hours}:${minutes}:${seconds} ${period}`
+      : `${hours}:${minutes}:${seconds}`;
+  } else {
+    return hour_format12
+      ? `${hours}:${minutes} ${period}`
+      : `${hours}:${minutes}`;
   }
-  //:${seconds}`;
 }
 
 function modifyDefault() {
@@ -169,6 +206,8 @@ function livelyAudioListener(audioArray) {
   var averageAudio = 0.5;
   var count = 0;
 
+
+  audioArray = clearNoiseArray(audioArray);
   for (let x = 0; x < audioArray.length; x++) {
 
       count+=audioArray[x]
