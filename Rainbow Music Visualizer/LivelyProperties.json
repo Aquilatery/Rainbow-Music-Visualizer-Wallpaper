@@ -63,6 +63,11 @@
     "value": false,
     "text": "Show Seconds"
   },
+  "format12": {
+    "type": "checkbox",
+    "value": false,
+    "text": "12 Hour Clock Format"
+  },
   "shadow": {
     "type": "checkbox",
     "value": true,
@@ -83,6 +88,14 @@
   "regenerate": {
     "type": "button",
     "value": "Regenerate Random Spectre"
+
+  },
+  "minimalAudioValue": {
+    "max": 1000,
+    "min": 0,
+    "text": "Minimal Audio Value",
+    "type": "slider",
+    "value": 5
 
   }
 
