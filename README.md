@@ -1,24 +1,55 @@
-# Rainbow Music Visualizer for Lively Wallpaper
+# Ray Music Visualizer for Lively Wallpaper
 
-<img src="/Rainbow Music Visualizer/naneb0au.gif" width="400" />
+<img src="/video.gif" width="400" />
 
-### Multiple Parameters :
+[Previews](#previews)
 
-`Intensity` : Change spectre intensity
+❕ Signal me if you found any bugs
 
-`Background Color` : Change the backround color (Not work I don't know why)
+# Multiple Parameters (36) :
+
+
+## Color Parameters
+
+`Background Color` : Change the backround color 
+
+`Custom Gradient` : The Gradient of the vizualizer is set by you with `Color 1` and `Color 2`
 
 `White Inside` : Place a white color at the base of the spectrum
+
+## Line Parameters
 
 `Clean Line End` : Clean the spectrum ray, better when you don't use shadow
 
 `Interpolate` : Do an interpolation of the audio value for more ray
 
-`Show Hour` : Show the hour
+`Rounded Mode` : The ray are solid with rounded bordure
 
-`Police Hour` : Change the hour typeface
+`Hide when no music` : Hide the Spectrum when no music
 
-`Hour Size` : Change the hour size
+`Reverse Audio` : Reverse the audio values
+
+`Minimal Audio` : Set the minimum audio value for all ray
+
+`Line Width` : In rounded mode that change the width of all ray
+
+`Intensity` : Change spectre intensity
+
+`Angle of the Line` : Change the intensity of angle in rounded mode (Can bug)
+
+`Increases treble` : Increase the intensity of trebles value to balance
+
+## Hour Parameters
+
+`Text Font` : Change the text font
+
+`Text bold` : Switch text to bold
+
+`Show Hour` : Show the hour (logic)
+
+`Hour Size` : Change the hour size (idem)
+
+`Hour Color` : Change the hour color (.)
 
 `X and Y Hour Position` : Change the hour position on screen
 
@@ -26,16 +57,38 @@
 
 `12 Hour Clock Format` : Change the clock format to 12 hour
 
+`Show Date` : Show the date 
+
+`Date Size` : Change the date size 
+
+`Date Color` : Change the date color 
+
+`X and Y Date Position` : Change the date position on screen
+
+`Show Year` : Show the year with hour
+
+## Shadow Parameters
+
 `Shadow` : Create a shadow colored effect behind the audio spectre
 
 `Shadow Intensity` : The shadow has more power (Need Performance when high)
 
 `Shadow with Music` : The shadow has more power when the music is high
 
+
+## Other
+
+`Backround wallpaper` : Switch the backround to an image
+
+`Backround Drop` : Set the backround image. If you the a very high quality it can take a bit of time
+
 `Regenerate Random Spectre` : Regenerate the default spectre when there are no Music
 
-`Minimal Audio` : Set the minimum audio value required to display the ray
+# Previews
 
-# 
+<img src="/previews/preview1.png" width="400" /><img src="/previews/preview4.png" width="400" />
+<img src="/previews/preview2.png" width="400" /><img src="/previews/preview3.png" width="400" />
+
+#
 
 Original Project by rocksdanister : https://github.com/rocksdanister/audio-visualizer-wallpaper
