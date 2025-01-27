@@ -88,7 +88,7 @@
 
 <img src="/previews/preview1.png" width="400" /><img src="/previews/preview4.png" width="400" />
 <img src="/previews/preview2.png" width="400" /><img src="/previews/preview3.png" width="400" />
-
+<img src="/previews/previews5.png" width="400" />
 #
 
 Original Project by rocksdanister : https://github.com/rocksdanister/audio-visualizer-wallpaper
