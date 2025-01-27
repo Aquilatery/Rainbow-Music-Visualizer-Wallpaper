@@ -1,0 +1,17 @@
+{
+  "AppVersion": "1.2.52",
+  "Title": "Ray Music Visualizer 1.2",
+  "Thumbnail": "image.jpg",
+  "Preview": "video.gif",
+  "Desc": "Audio spectrum that reacts with system sound",
+  "Author": "Aprotonix",
+  "License": "MIT",
+  "Contact": "",
+  "Type": 1,
+  "FileName": "index.html",
+  "Arguments": " --audio",
+  "IsAbsolutePath": false,
+  "Id": null,
+  "Tags": null,
+  "Version": 3
+}
