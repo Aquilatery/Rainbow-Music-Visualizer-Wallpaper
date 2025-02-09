@@ -196,11 +196,27 @@
     "type": "slider",
     "value": 69
   },
+  "showDayName": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Show Day Name"
+  },
+  "showDayNumber": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Show Day Number"
+  },
   "showYear": {
     "type": "checkbox",
     "value": false,
     "text": "Show Year"
   },
+  "shortDate": {
+    "type": "checkbox",
+    "value": false,
+    "text": "Date Format MM/DD/AAAA"
+  },
+  
   "labelShadow": {
      "type": "label",
      "value": "Shadow Parameters"
@@ -222,10 +238,6 @@
     "value": true,
     "text": "The stronger the intensity, the stronger the shadow will be"
   },
-  
- 
- 
-
   "backroundWallpaper": {
     "type": "checkbox",
     "value": false,
@@ -242,9 +254,13 @@
     "type": "button",
     "value": "Regenerate Random Spectre"
 
+  },
+  "showUpdateNotif": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Show Update Notif"
   }
 
-      
-
+    
   
 }
