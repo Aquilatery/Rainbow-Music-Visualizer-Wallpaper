@@ -1,6 +1,10 @@
 /////////////////////////////////////////
 //          Made by Aprotonix          //
 /////////////////////////////////////////
+
+const current_version = "1.3"
+
+
 let canvas = document.getElementById("canvas");
 let max_height, startPos, vizWidth, midY;
 
@@ -19,10 +23,14 @@ let xHour = 2.0;
 let yHour = 8.0;
 let showDate = true
 let showYear = false
+let showDayName = true;
+let showDayNumber = true;
+let shortDate = false;
 let xDate = 2.0;
 let yDate = 8.0;
 let hour_format12 = false;;
 let showSecond = false;
+
 let shadow = true;
 let shadowIntensity = 30;
 let shadowWithMusic = true;
@@ -49,12 +57,55 @@ let reverse_audio = false
 // background_image.src = "./backround/wallpaper1.png";
 let backround_colored = true;
 
+let updateAvailable = false;
+let showUpdateNotif = true;
+
 let ctx = canvas.getContext("2d");
 let gradient;
 let defaultAudioArray = [];
 
 
 livelyPropertyListener("", "");
+
+isUpdate().then(update => {
+  updateAvailable = update; 
+
+});
+
+
+
+
+async function isUpdate() {
+  try {
+      const response = await fetch("https://api.github.com/repos/Aprotonix/Rainbow-Music-Visualizer-Wallpaper/releases/latest");
+      if (!response.ok) throw new Error("Failed to fetch release data");
+
+      const data = await response.json();
+      let latestVersion = data.tag_name; // Ex: "V1.2"
+
+      if (latestVersion.startsWith("V")) {
+          latestVersion = latestVersion.slice(1); // Supprime le "V"
+      }
+
+      return compareVersions(current_version, latestVersion);
+  } catch (error) {
+      return false;
+  }
+}
+
+function compareVersions(current, latest) {
+  const currentParts = current.split('.').map(Number);
+  const latestParts = latest.split('.').map(Number);
+
+  for (let i = 0; i < Math.max(currentParts.length, latestParts.length); i++) {
+      const curr = currentParts[i] || 0;
+      const late = latestParts[i] || 0;
+      if (curr < late) return true;
+      if (curr > late) return false;
+  }
+  return false; // Versions identiques
+}
+
 
 function setSize() {
   canvas.width = window.innerWidth;
@@ -249,6 +300,19 @@ function livelyPropertyListener(name, val) {
     case "showYear":
       showYear = val;
       break;
+
+    case "showDayName":
+      showDayName = val;
+      break;
+    case "showDayNumber":
+      showDayNumber = val;
+      break
+    case "shortDate":
+      shortDate = val;
+      break
+    case "showUpdateNotif":
+      showUpdateNotif = val;
+      break
     
     default:
 
@@ -322,7 +386,7 @@ function getCurrentTime() {
       : `${hours}:${minutes}:${seconds}`;
   } else {
     return hour_format12
-      ? `${hours}:${minutes} ${period}`
+     ? `${hours}:${minutes} ${period}`
       : `${hours}:${minutes}`;
   }
 }
@@ -335,22 +399,30 @@ function getFormattedDate() {
   ];
 
   const now = new Date();
-  const dayName = days[now.getDay()]; // Day name
-  const date = now.getDate(); // Day of the month
-  const monthName = months[now.getMonth()]; // Month name
-  
-  if (showYear) {
-    const year = now.getFullYear(); // Year
-    return `${dayName} ${date} ${monthName} ${year}`;
+  const dayName = days[now.getDay()];
+  const dayNumber = now.getDate();
+  const monthName = months[now.getMonth()];
+  const monthNumber = now.getMonth() + 1; 
+  const year = now.getFullYear();
+
+ 
+  if (shortDate) {
+    return `${monthNumber.toString().padStart(2, '0')}/${dayNumber.toString().padStart(2, '0')}/${year}`;
   }
-  else {
-    return `${dayName} ${date} ${monthName}`;
-  }
+
   
+  let formattedDate = "";
+
+  if (showDayName) formattedDate += `${dayName} `;
+  if (showDayNumber) formattedDate += `${dayNumber} `;
+  formattedDate += monthName;
+  if (showYear) formattedDate += ` ${year}`;
+
+  return formattedDate.trim();
 }
 
-// Example usage
-console.log(getFormattedDate());
+
+
 
 function modifyDefault() {
   for (let x = 0; x < 120; x++) {
@@ -597,7 +669,13 @@ function livelyAudioListener(audioArray) {
     ctx.shadowBlur = 0;
 
   }
-  
+
   showTime();
+
+  if (updateAvailable && showUpdateNotif){
+    ctx.fillStyle = "rgb(255,255,255)";
+    ctx.font = `bold 20px ${policeHour}`;
+    ctx.fillText("Update Available", canvas.width -100, canvas.height - 70);
+}
 
 }
