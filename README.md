@@ -39,7 +39,7 @@
 
 `Increases treble` : Increase the intensity of trebles value to balance
 
-## Hour Parameters
+## Date and Hour Parameters
 
 `Text Font` : Change the text font
 
@@ -65,7 +65,14 @@
 
 `X and Y Date Position` : Change the date position on screen
 
-`Show Year` : Show the year with hour
+`Show Year` : Show the year with date
+
+`Show Day Name` : Show the day name with date (ex: Monday) 
+
+`Show Day Number` : Show the day number with date
+
+`Format MM/DD/AA` : Set the day format as MM/DD/AA
+
 
 ## Shadow Parameters
 
@@ -83,6 +90,8 @@
 `Backround Drop` : Set the backround image. If you the a very high quality it can take a bit of time
 
 `Regenerate Random Spectre` : Regenerate the default spectre when there are no Music
+
+`Update Notif` : Show a "Update Available" at the right back corner of the screen when a update is available
 
 # Previews
 
