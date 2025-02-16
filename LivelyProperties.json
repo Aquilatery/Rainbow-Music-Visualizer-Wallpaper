@@ -33,7 +33,12 @@
   },
   "labelLine": {
      "type": "label",
-     "value": "Line Parameters"
+     "value": "Ray Parameters"
+  },
+  "activeMusicVizualizer": {
+    "type": "checkbox",
+    "value": true,
+    "text": "Show Music Vizualizer"
   },
   "cleanLineEnd": {
     "text": "Clean line end (Don't use with shadow)",
@@ -107,8 +112,13 @@
     "value": 0
 
   },
-
-  
+  "yMusicVizualizer": {
+    "max": 100,
+    "min": 0,
+    "text": "Y Music Vizualizer",
+    "type": "slider",
+    "value": 52
+  },
   "labelHour": {
      "type": "label",
      "value": "Time Parameters"
@@ -146,14 +156,14 @@
     "min": 0,
     "text": "X Hour Position",
     "type": "slider",
-    "value": 80
+    "value": 51
   },
   "yHour": {
     "max": 100,
     "min": 0,
     "text": "Y Hour Position",
     "type": "slider",
-    "value": 66
+    "value": 54
   },
   "showSecond": {
     "type": "checkbox",
@@ -187,14 +197,14 @@
     "min": 0,
     "text": "X Date Position",
     "type": "slider",
-    "value": 80
+    "value": 51
   },
   "yDate": {
     "max": 100,
     "min": 0,
     "text": "Y Date Position",
     "type": "slider",
-    "value": 69
+    "value": 34
   },
   "showDayName": {
     "type": "checkbox",
@@ -261,6 +271,7 @@
     "text": "Show Update Notif"
   }
 
-    
+      
+
   
 }
