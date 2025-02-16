@@ -39,6 +39,8 @@
 
 `Increases treble` : Increase the intensity of trebles value to balance
 
+`Y Music Vizualizer` : Change the Y coordinate of the music spectrum
+
 ## Date and Hour Parameters
 
 `Text Font` : Change the text font
@@ -97,7 +99,11 @@
 
 <img src="/previews/preview1.png" width="400" /><img src="/previews/preview4.png" width="400" />
 <img src="/previews/preview2.png" width="400" /><img src="/previews/preview3.png" width="400" />
-<img src="/previews/previews5.png" width="400" />
+<img src="/previews/previews5.png" width="400" /><img src="/previews/preview6.png" width="400" />
+<img src="/previews/preview7.png" width="400" /><img src="/previews/preview8.png" width="400" />
+
 #
+
+Let me know if you find any bugs or if you have any suggestions.
 
 Original Project by rocksdanister : https://github.com/rocksdanister/audio-visualizer-wallpaper
