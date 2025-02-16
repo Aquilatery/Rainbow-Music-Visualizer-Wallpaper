@@ -2,7 +2,7 @@
 //          Made by Aprotonix          //
 /////////////////////////////////////////
 
-const current_version = "1.3"
+const current_version = "1.4"
 
 
 let canvas = document.getElementById("canvas");
@@ -10,6 +10,11 @@ let max_height, startPos, vizWidth, midY;
 
 let backgroundColor = "rgb(0,0,0)";
 let maxVal = 3.5;
+
+let view_spectrum = true;
+//let x_spectrum = 20;
+let y_spectrum = 52;
+
 
 let interpolate = false;
 let whiteInside = false;
@@ -68,7 +73,7 @@ let defaultAudioArray = [];
 livelyPropertyListener("", "");
 
 isUpdate().then(update => {
-  updateAvailable = update; 
+  updateAvailable = update;
 
 });
 
@@ -77,19 +82,19 @@ isUpdate().then(update => {
 
 async function isUpdate() {
   try {
-      const response = await fetch("https://api.github.com/repos/Aprotonix/Rainbow-Music-Visualizer-Wallpaper/releases/latest");
-      if (!response.ok) throw new Error("Failed to fetch release data");
+    const response = await fetch("https://api.github.com/repos/Aprotonix/Rainbow-Music-Visualizer-Wallpaper/releases/latest");
+    if (!response.ok) throw new Error("Failed to fetch release data");
 
-      const data = await response.json();
-      let latestVersion = data.tag_name; // Ex: "V1.2"
+    const data = await response.json();
+    let latestVersion = data.tag_name; // Ex: "V1.2"
 
-      if (latestVersion.startsWith("V")) {
-          latestVersion = latestVersion.slice(1); // Supprime le "V"
-      }
+    if (latestVersion.startsWith("V")) {
+      latestVersion = latestVersion.slice(1); // Supprime le "V"
+    }
 
-      return compareVersions(current_version, latestVersion);
+    return compareVersions(current_version, latestVersion);
   } catch (error) {
-      return false;
+    return false;
   }
 }
 
@@ -98,10 +103,10 @@ function compareVersions(current, latest) {
   const latestParts = latest.split('.').map(Number);
 
   for (let i = 0; i < Math.max(currentParts.length, latestParts.length); i++) {
-      const curr = currentParts[i] || 0;
-      const late = latestParts[i] || 0;
-      if (curr < late) return true;
-      if (curr > late) return false;
+    const curr = currentParts[i] || 0;
+    const late = latestParts[i] || 0;
+    if (curr < late) return true;
+    if (curr > late) return false;
   }
   return false; // Versions identiques
 }
@@ -113,7 +118,7 @@ function setSize() {
   max_height = window.innerHeight * 0.4;
   startPos = window.innerWidth * 0.05;
   vizWidth = window.innerWidth * 0.9;
-  midY = canvas.height / 2;
+ // midY = canvas.height / 2;
 
   generate_canvas_gradiant();
 
@@ -185,7 +190,7 @@ function livelyPropertyListener(name, val) {
       backgroundColor = val;
 
       break;
-    
+
     case "policeHour":
       policeHour = val;
       break;
@@ -199,10 +204,10 @@ function livelyPropertyListener(name, val) {
       hourColor = val;
       break;
     case "xHour":
-      xHour = ((100-val) / 10);
+      xHour = val;
       break;
     case "yHour":
-      yHour = (100-val) / 10;
+      yHour = val;
       break;
     case "hourSize":
       hourSize = val / 10;
@@ -220,10 +225,10 @@ function livelyPropertyListener(name, val) {
       dateColor = val;
       break;
     case "xDate":
-      xDate = ((100-val) / 10);
+      xDate = val;
       break;
     case "yDate":
-      yDate = (100-val) / 10;
+      yDate = val;
       break;
     case "dateSize":
       dateSize = val / 10;
@@ -234,7 +239,7 @@ function livelyPropertyListener(name, val) {
     case "shadowIntensity":
       shadowIntensity = val;
       break;
-    
+
     case "whiteInside":
       whiteInside = val;
       break;
@@ -275,11 +280,6 @@ function livelyPropertyListener(name, val) {
     case "roundMode":
       round_theme = val;
       break;
-
-    // case "fontSelect":
-    //   addFont(val);
-    //   policeHour = val;
-    //   break;
     case "backroundSelect":
       addimage(val);
       break;
@@ -313,7 +313,17 @@ function livelyPropertyListener(name, val) {
     case "showUpdateNotif":
       showUpdateNotif = val;
       break
-    
+    case "activeMusicVizualizer":
+      view_spectrum = val;
+      break
+    case "xMusicVizualizer":
+      x_spectrum = val;
+      break
+
+    case "yMusicVizualizer":
+      y_spectrum = val;
+      break
+
     default:
 
       break;
@@ -334,15 +344,15 @@ function addimage(path) {
 }
 
 function equalize(audioArray) {
-  let mid = Math.floor((audioArray.length / 4)*3); // Correction de int
+  let mid = Math.floor((audioArray.length / 4) * 3); // Correction de int
   let value = equalizer / mid; // Déclaration correcte de la variable
 
 
-    
-    for (let i = mid; i < audioArray.length ; i++) {
-      audioArray[i] = audioArray[i]*(value*(i-mid));
 
-    }
+  for (let i = mid; i < audioArray.length; i++) {
+    audioArray[i] = audioArray[i] * (value * (i - mid));
+
+  }
 
   return audioArray;
 
@@ -386,7 +396,7 @@ function getCurrentTime() {
       : `${hours}:${minutes}:${seconds}`;
   } else {
     return hour_format12
-     ? `${hours}:${minutes} ${period}`
+      ? `${hours}:${minutes} ${period}`
       : `${hours}:${minutes}`;
   }
 }
@@ -402,15 +412,15 @@ function getFormattedDate() {
   const dayName = days[now.getDay()];
   const dayNumber = now.getDate();
   const monthName = months[now.getMonth()];
-  const monthNumber = now.getMonth() + 1; 
+  const monthNumber = now.getMonth() + 1;
   const year = now.getFullYear();
 
- 
+
   if (shortDate) {
     return `${monthNumber.toString().padStart(2, '0')}/${dayNumber.toString().padStart(2, '0')}/${year}`;
   }
 
-  
+
   let formattedDate = "";
 
   if (showDayName) formattedDate += `${dayName} `;
@@ -449,13 +459,13 @@ function showTime() {
     else {
       ctx.font = `${max_height * 0.3 * hourSize}px ${policeHour}`;
     }
-    
+
     ctx.textAlign = "center"; // Centrer le texte
-    ctx.fillText(getCurrentTime(), canvas.width / xHour, canvas.width / yHour);
+    ctx.fillText(getCurrentTime(), (canvas.width * xHour) / 100, (canvas.height * yHour) / 100);
     //ctx.fillText(backgroundColor, canvas.width / xHour, canvas.width / yHour);
   }
   if (showDate) {
-    
+
     ctx.fillStyle = dateColor;
     if (policeBold) {
       ctx.font = `bold ${max_height * 0.3 * dateSize}px ${policeHour}`;
@@ -464,7 +474,7 @@ function showTime() {
       ctx.font = `${max_height * 0.3 * dateSize}px ${policeHour}`;
     }
     ctx.textAlign = "center"; // Centrer le texte
-    ctx.fillText(getFormattedDate(), canvas.width / xDate, canvas.width / yDate);
+    ctx.fillText(getFormattedDate(), (canvas.width * xDate) / 100, (canvas.width * yDate) / 100);
     //ctx.fillText(backgroundColor, canvas.width / xHour, canvas.width / yHour);
 
   }
@@ -491,20 +501,21 @@ function livelyAudioListener(audioArray) {
   if (reverse_audio) {
     audioArray.reverse();
   }
-  for (let x = 0; x < audioArray.length; x++) {count += audioArray[x]}
+  for (let x = 0; x < audioArray.length; x++) { count += audioArray[x] }
   if (count == 0) {
-    if (hide_no_music)
-    {clearCanvas();
+    if (hide_no_music) {
+      clearCanvas();
       showTime();
-      
-      return;}
-    else { audioArray = defaultAudioArray;}
-   
+
+      return;
+    }
+    else { audioArray = defaultAudioArray; }
+
   }
   else {
     averageAudio = (count / audioArray.length);
-    if (equalizer!=0) {
-    audioArray = equalize(audioArray);
+    if (equalizer != 0) {
+      audioArray = equalize(audioArray);
     }
 
   }
@@ -516,166 +527,168 @@ function livelyAudioListener(audioArray) {
   const offSet = (vizWidth / audioArray.length);
   clearCanvas();
 
-
-  if (shadow) {
-    ctx.shadowBlur = shadowIntensity;
-    ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
-  }
-
-  for (let x = 0; x < audioArray.length; x++) {
-    let audioValue = audioArray[x];
-
-    if (audioValue < minimalAudio) {
-      audioValue = minimalAudio;
+  if (view_spectrum) {
+    if (shadow) {
+      ctx.shadowBlur = shadowIntensity;
+      ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
     }
 
-    const barHeight = (audioValue / maxVal) * max_height + add_audio_value;
-    const posX = startPos + x * offSet;
-    const color = colors[Math.floor(posX)];
+    midY = (canvas.height*y_spectrum )/ 100
+    for (let x = 0; x < audioArray.length; x++) {
+      let audioValue = audioArray[x];
+
+      if (audioValue < minimalAudio) {
+        audioValue = minimalAudio;
+      }
+
+      const barHeight = (audioValue / maxVal) * max_height + add_audio_value;
+      const posX = startPos + x * offSet;
+      const color = colors[Math.floor(posX)];
+
+      if (shadow) {
+        ctx.shadowColor = color
+        if (shadowWithMusic) {
+          ctx.shadowBlur = shadowIntensity * (audioValue + averageAudio)
+        }
+
+      };
+
+      let invert_spacing_between_bar = 1 - spacing_between_bar
+
+      lineGradient = ctx.createLinearGradient(0, midY, 0, midY - barHeight);
+      if (whiteInside) { lineGradient.addColorStop(0.01, "white"); }
+      lineGradient.addColorStop(0.05, color);
+      if (cleanLineEnd) { lineGradient.addColorStop(0.7, backgroundColor); }
+
+      ctx.fillStyle = lineGradient;
+      if (round_theme) {
+        /////////////////////////////////////////HAUT
+        ctx.beginPath();
+        ctx.moveTo(posX + offSet * spacing_between_bar, midY);
+
+        // Rounded bottom-left corner
+        ctx.lineTo(posX + offSet * spacing_between_bar, midY - barHeight * 0.9);
+        ctx.arcTo(
+          posX + offSet * spacing_between_bar,
+          midY - barHeight,
+          posX + offSet / 2,
+          midY - barHeight,
+          line_angle
+        );
+
+        // Top of the bar
+        ctx.lineTo(posX + offSet / 2, midY - barHeight);
+
+        // Rounded top-right corner
+        ctx.arcTo(
+          posX + offSet * invert_spacing_between_bar, // Symmetric spacing
+          midY - barHeight,
+          posX + offSet * invert_spacing_between_bar,
+          midY - barHeight * 0.9,
+          line_angle
+        );
+
+        // Return to base with rounded bottom-right corner
+        ctx.lineTo(posX + offSet * invert_spacing_between_bar, midY);
+        if (whiteInside) {
+          ctx.closePath();
+          ctx.fill();
+        }
+
+
+        /////////////////////////////////////////BAS
+
+        lineGradient = ctx.createLinearGradient(0, midY, 0, midY + barHeight);
+        if (whiteInside) { lineGradient.addColorStop(0.02, "white"); }
+        lineGradient.addColorStop(0.05, color);
+        if (cleanLineEnd) { lineGradient.addColorStop(0.7, backgroundColor); }
+        ctx.fillStyle = lineGradient;
+
+        if (whiteInside) { ctx.beginPath(); }
+        // ctx.beginPath();
+        ctx.moveTo(posX + offSet * spacing_between_bar, midY);
+
+        // Rounded bottom-left corner
+        ctx.lineTo(posX + offSet * spacing_between_bar, midY + barHeight * 0.9);
+        ctx.arcTo(
+          posX + offSet * spacing_between_bar,
+          midY + barHeight,
+          posX + offSet / 2,
+          midY + barHeight,
+          line_angle
+        );
+
+        // Top of the bar
+        ctx.lineTo(posX + offSet / 2, midY + barHeight);
+
+        // Rounded top-right corner
+        ctx.arcTo(
+          posX + offSet * invert_spacing_between_bar, // Symmetric spacing
+          midY + barHeight,
+          posX + offSet * invert_spacing_between_bar,
+          midY + barHeight * 0.9,
+          line_angle
+        );
+
+        // Return to base with rounded bottom-right corner
+        ctx.lineTo(posX + offSet * (1 - spacing_between_bar), midY);
+
+        ctx.closePath();
+        ctx.fill();
+
+
+      }
+      else {
+        ctx.beginPath();
+        ctx.moveTo(posX, midY);
+        //ctx.lineTo((posX + offSet / 5)-plusWidth, midY - barHeight*0.01); 
+        ctx.lineTo((posX + offSet / 5), midY - barHeight * 0.05);
+        ctx.lineTo(posX + offSet / 2, midY - barHeight);
+        ctx.lineTo((posX + (offSet / 5) * 4), midY - barHeight * 0.05);
+        //ctx.lineTo((posX + (offSet / 5)*4)+plusWidth, midY - barHeight*0.01); 
+
+        ctx.lineTo(posX + offSet, midY);
+        ctx.closePath();
+        ctx.fill();
+        //ctx.fillRect(posX, midY - barHeight, offSet*0.7 , barHeight);
+
+        lineGradient = ctx.createLinearGradient(0, midY, 0, midY + barHeight);
+        if (whiteInside) { lineGradient.addColorStop(0.02, "white"); }
+        lineGradient.addColorStop(0.05, color);
+        if (cleanLineEnd) { lineGradient.addColorStop(0.7, backgroundColor); }
+
+
+
+        ctx.fillStyle = lineGradient;
+        //ctx.fillRect(posX, midY, offSet *0.7, barHeight); 
+        ctx.beginPath();
+        ctx.moveTo(posX, midY);
+        //ctx.lineTo((posX + offSet / 5)-plusWidth, midY + barHeight*0.01); 
+        ctx.lineTo((posX + offSet / 5), midY + barHeight * 0.05);
+        ctx.lineTo(posX + offSet / 2, midY + barHeight);
+        ctx.lineTo((posX + (offSet / 5) * 4), midY + barHeight * 0.05);
+        //ctx.lineTo((posX + (offSet / 5)*4)+plusWidth, midY + barHeight*0.01); 
+
+        ctx.lineTo(posX + offSet, midY);
+        ctx.closePath();
+        ctx.fill();
+      }
+    }
+
+
 
     if (shadow) {
-      ctx.shadowColor = color
-      if (shadowWithMusic) {
-        ctx.shadowBlur = shadowIntensity * (audioValue + averageAudio)
-      }
-
-    };
-
-    let invert_spacing_between_bar = 1 - spacing_between_bar
-
-    lineGradient = ctx.createLinearGradient(0, midY, 0, midY - barHeight);
-    if (whiteInside) { lineGradient.addColorStop(0.01, "white"); }
-    lineGradient.addColorStop(0.05, color);
-    if (cleanLineEnd) { lineGradient.addColorStop(0.7, backgroundColor); }
-
-    ctx.fillStyle = lineGradient;
-    if (round_theme) {
-      /////////////////////////////////////////HAUT
-      ctx.beginPath();
-      ctx.moveTo(posX + offSet * spacing_between_bar, midY);
-
-      // Rounded bottom-left corner
-      ctx.lineTo(posX + offSet * spacing_between_bar, midY - barHeight * 0.9);
-      ctx.arcTo(
-        posX + offSet * spacing_between_bar,
-        midY - barHeight,
-        posX + offSet / 2,
-        midY - barHeight,
-        line_angle
-      );
-
-      // Top of the bar
-      ctx.lineTo(posX + offSet / 2, midY - barHeight);
-
-      // Rounded top-right corner
-      ctx.arcTo(
-        posX + offSet * invert_spacing_between_bar, // Symmetric spacing
-        midY - barHeight,
-        posX + offSet * invert_spacing_between_bar,
-        midY - barHeight * 0.9,
-        line_angle
-      );
-
-      // Return to base with rounded bottom-right corner
-      ctx.lineTo(posX + offSet * invert_spacing_between_bar, midY);
-      if (whiteInside) {
-      ctx.closePath();
-      ctx.fill();
-      }
-
-
-      /////////////////////////////////////////BAS
-
-      lineGradient = ctx.createLinearGradient(0, midY, 0, midY + barHeight);
-      if (whiteInside) { lineGradient.addColorStop(0.02, "white"); }
-      lineGradient.addColorStop(0.05, color);
-      if (cleanLineEnd) { lineGradient.addColorStop(0.7, backgroundColor); }
-      ctx.fillStyle = lineGradient;
-
-      if (whiteInside) {ctx.beginPath();}
-      // ctx.beginPath();
-      ctx.moveTo(posX + offSet * spacing_between_bar, midY);
-
-      // Rounded bottom-left corner
-      ctx.lineTo(posX + offSet * spacing_between_bar, midY + barHeight * 0.9);
-      ctx.arcTo(
-        posX + offSet * spacing_between_bar,
-        midY + barHeight,
-        posX + offSet / 2,
-        midY + barHeight,
-        line_angle
-      );
-
-      // Top of the bar
-      ctx.lineTo(posX + offSet / 2, midY + barHeight);
-
-      // Rounded top-right corner
-      ctx.arcTo(
-        posX + offSet * invert_spacing_between_bar, // Symmetric spacing
-        midY + barHeight,
-        posX + offSet * invert_spacing_between_bar,
-        midY + barHeight * 0.9,
-        line_angle
-      );
-
-      // Return to base with rounded bottom-right corner
-      ctx.lineTo(posX + offSet * (1 - spacing_between_bar), midY);
-
-      ctx.closePath();
-      ctx.fill();
-
+      ctx.shadowBlur = 0;
 
     }
-    else {
-      ctx.beginPath();
-      ctx.moveTo(posX, midY);
-      //ctx.lineTo((posX + offSet / 5)-plusWidth, midY - barHeight*0.01); 
-      ctx.lineTo((posX + offSet / 5), midY - barHeight * 0.05);
-      ctx.lineTo(posX + offSet / 2, midY - barHeight);
-      ctx.lineTo((posX + (offSet / 5) * 4), midY - barHeight * 0.05);
-      //ctx.lineTo((posX + (offSet / 5)*4)+plusWidth, midY - barHeight*0.01); 
-
-      ctx.lineTo(posX + offSet, midY);
-      ctx.closePath();
-      ctx.fill();
-      //ctx.fillRect(posX, midY - barHeight, offSet*0.7 , barHeight);
-
-      lineGradient = ctx.createLinearGradient(0, midY, 0, midY + barHeight);
-      if (whiteInside) { lineGradient.addColorStop(0.02, "white"); }
-      lineGradient.addColorStop(0.05, color);
-      if (cleanLineEnd) { lineGradient.addColorStop(0.7, backgroundColor); }
-
-
-
-      ctx.fillStyle = lineGradient;
-      //ctx.fillRect(posX, midY, offSet *0.7, barHeight); 
-      ctx.beginPath();
-      ctx.moveTo(posX, midY);
-      //ctx.lineTo((posX + offSet / 5)-plusWidth, midY + barHeight*0.01); 
-      ctx.lineTo((posX + offSet / 5), midY + barHeight * 0.05);
-      ctx.lineTo(posX + offSet / 2, midY + barHeight);
-      ctx.lineTo((posX + (offSet / 5) * 4), midY + barHeight * 0.05);
-      //ctx.lineTo((posX + (offSet / 5)*4)+plusWidth, midY + barHeight*0.01); 
-
-      ctx.lineTo(posX + offSet, midY);
-      ctx.closePath();
-      ctx.fill();
-    }
-  }
-
-
-
-  if (shadow) {
-    ctx.shadowBlur = 0;
-
   }
 
   showTime();
 
-  if (updateAvailable && showUpdateNotif){
+  if (updateAvailable && showUpdateNotif) {
     ctx.fillStyle = "rgb(255,255,255)";
     ctx.font = `bold 20px ${policeHour}`;
-    ctx.fillText("Update Available", canvas.width -100, canvas.height - 70);
-}
+    ctx.fillText("Update Available", canvas.width - 100, canvas.height - 70);
+  }
 
 }
