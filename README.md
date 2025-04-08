@@ -17,6 +17,12 @@
 
 `White Light Inside` : Place a white color at the base of the spectrum
 
+## Background
+
+`Background Wallpaper` : Switch the background to an image
+
+`Background Image` : Set the background image. If you the a very high quality it can take a bit of time
+
 ## Ray Parameters
 
 `Show Music Visualizer` : Clean the spectrum ray, better when you don't use shadow
@@ -75,7 +81,6 @@
 
 `Format MM/DD/AA` : Set the day format as MM/DD/AA
 
-
 ## Shadow Parameters
 
 `Shadow` : Create a shadow colored effect behind the audio spectre
@@ -84,12 +89,7 @@
 
 `Shadow with Music` : The shadow has more power when the music is high
 
-
 ## Other
-
-`Background Wallpaper` : Switch the background to an image
-
-`Background Image` : Set the background image. If you the a very high quality it can take a bit of time
 
 `Regenerate Random Spectre` : Regenerate the default spectre when there are no Music
 
