@@ -106,4 +106,4 @@
 
 Let me know if you find any bugs or if you have any suggestions.
 
-Original Project by rocksdanister : https://github.com/rocksdanister/audio-visualizer-wallpaper
+Original Project by Aprotonix : https://github.com/Aprotonix/Rainbow-Music-Visualizer-Wallpaper
