@@ -1,26 +1,18 @@
-/////////////////////////////////////////
-//          Made by Aprotonix          //
-/////////////////////////////////////////
-
-const current_version = "1.4"
-
-
 let canvas = document.getElementById("canvas");
 let max_height, startPos, vizWidth, midY;
 
-let backgroundColor = "rgb(0,0,0)";
+let backgroundColor = "#000000"; //rgb(0,0,0)
 let maxVal = 3.5;
 
 let view_spectrum = true;
 //let x_spectrum = 20;
 let y_spectrum = 52;
 
-
 let interpolate = false;
 let whiteInside = false;
 let cleanLineEnd = false;
 let showHour = true;
-let policeHour = "Arial";
+let policeTime = "Arial";
 let policeBold = true;
 let hourSize = 1;
 let dateSize = 1;
@@ -49,396 +41,328 @@ let custom_gradient = true
 
 let equalizer = 0;
 
-let color1 = "rgb(0,0,255)"
-let color2 = "rgb(127, 0,255)"
+let color1 = "#0000FF" //rgb(0,0,255)
+let color2 = "#7F00FF" //rgb(127, 0,255)
 
-let hourColor = "rgb(255,255,255)"
-let dateColor = "rgb(255,255,255)"
+let hourColor = "#FFFFFF" //rgb(255,255,255)
+let dateColor = "#FFFFFF" //rgb(255,255,255)
 
-let hide_no_music = false
+let hide_no_music = true
 let reverse_audio = false
 
 // let background_image = new Image();
-// background_image.src = "./backround/wallpaper1.png";
-let backround_colored = true;
-
-let updateAvailable = false;
-let showUpdateNotif = true;
+// background_image.src = "./backgrounds/lakeview.png";
+let background_colored = true;
 
 let ctx = canvas.getContext("2d");
 let gradient;
 let defaultAudioArray = [];
 
-
-livelyPropertyListener("", "");
-
-isUpdate().then(update => {
-  updateAvailable = update;
-
-});
-
-
-
-
-async function isUpdate() {
-  try {
-    const response = await fetch("https://api.github.com/repos/Aprotonix/Rainbow-Music-Visualizer-Wallpaper/releases/latest");
-    if (!response.ok) throw new Error("Failed to fetch release data");
-
-    const data = await response.json();
-    let latestVersion = data.tag_name; // Ex: "V1.2"
-
-    if (latestVersion.startsWith("V")) {
-      latestVersion = latestVersion.slice(1); // Supprime le "V"
-    }
-
-    return compareVersions(current_version, latestVersion);
-  } catch (error) {
-    return false;
-  }
-}
-
-function compareVersions(current, latest) {
-  const currentParts = current.split('.').map(Number);
-  const latestParts = latest.split('.').map(Number);
-
-  for (let i = 0; i < Math.max(currentParts.length, latestParts.length); i++) {
-    const curr = currentParts[i] || 0;
-    const late = latestParts[i] || 0;
-    if (curr < late) return true;
-    if (curr > late) return false;
-  }
-  return false; // Versions identiques
-}
-
-
 function setSize() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  max_height = window.innerHeight * 0.4;
-  startPos = window.innerWidth * 0.05;
-  vizWidth = window.innerWidth * 0.9;
- // midY = canvas.height / 2;
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+	max_height = window.innerHeight * 0.4;
+	startPos = window.innerWidth * 0.05;
+	vizWidth = window.innerWidth * 0.9;
+	// midY = canvas.height / 2;
 
-  generate_canvas_gradiant();
+	generate_canvas_gradiant();
 
-  generateRandomAudio();
-
+	generateRandomAudio();
 }
 
 window.onload = () => {
-  setSize();
+	setSize();
 };
 
 window.onresize = () => {
-  setSize();
+	setSize();
 };
 
-
 function generate_canvas_gradiant() {
-  let colorGradientCanvas = ctx.createLinearGradient(0, 0, canvas.width, 0);
+	let colorGradientCanvas = ctx.createLinearGradient(0, 0, canvas.width, 0);
 
-  if (custom_gradient) {
-    colorGradientCanvas.addColorStop(0.0, color1);//BUG With blue
-    colorGradientCanvas.addColorStop(1, color2);
-  }
-  else {
-    // Creat Rainbow Gradient
-    colorGradientCanvas.addColorStop(0.05, "red");
-    colorGradientCanvas.addColorStop(0.17, "orange");
-    colorGradientCanvas.addColorStop(0.33, "yellow");
-    colorGradientCanvas.addColorStop(0.5, "green");
-    colorGradientCanvas.addColorStop(0.67, "blue");
-    colorGradientCanvas.addColorStop(0.83, "indigo");
-    colorGradientCanvas.addColorStop(1, "violet");
-  }
+	if (custom_gradient) {
+		colorGradientCanvas.addColorStop(0.0, color1); //BUG With blue
+		colorGradientCanvas.addColorStop(1, color2);
+	} else {
+		// Creat Rainbow Gradient
+		colorGradientCanvas.addColorStop(0.05, "red");
+		colorGradientCanvas.addColorStop(0.17, "orange");
+		colorGradientCanvas.addColorStop(0.33, "yellow");
+		colorGradientCanvas.addColorStop(0.5, "green");
+		colorGradientCanvas.addColorStop(0.67, "blue");
+		colorGradientCanvas.addColorStop(0.83, "indigo");
+		colorGradientCanvas.addColorStop(1, "violet");
+	}
 
-  let tempCanvas = document.createElement("canvas");
-  tempCanvas.width = canvas.width;
-  tempCanvas.height = 1;
-  let tempCtx = tempCanvas.getContext("2d");
+	let tempCanvas = document.createElement("canvas");
+	tempCanvas.width = canvas.width;
+	tempCanvas.height = 1;
+	let tempCtx = tempCanvas.getContext("2d");
 
-  tempCtx.fillStyle = colorGradientCanvas;
-  tempCtx.fillRect(0, 0, canvas.width, 1);
+	tempCtx.fillStyle = colorGradientCanvas;
+	tempCtx.fillRect(0, 0, canvas.width, 1);
 
-  colors = []; // Vider le tableau
-  for (let x = 0; x < canvas.width; x++) {
-    let pixelData = tempCtx.getImageData(x, 0, 1, 1).data;
-    colors[x] = `rgb(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]})`;
-  }
+	colors = []; // Vider le tableau
+	for (let x = 0; x < canvas.width; x++) {
+		let pixelData = tempCtx.getImageData(x, 0, 1, 1).data;
+		colors[x] = `rgb(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]})`;
+	}
 }
-
 
 function generateRandomAudio() {
-  defaultAudioArray = [];
-  for (let x = 0; x < 120; x++) {
-    defaultAudioArray.push(Math.random());
-  }
+	defaultAudioArray = [];
+	for (let x = 0; x < 120; x++) {
+		defaultAudioArray.push(Math.random());
+	}
 }
 
-function livelyPropertyListener(name, val) {
-  switch (name) {
+function SucrosePropertyListener(name, val) {
+	switch (name) {
+		case "interpolate":
+			interpolate = val.value;
+			break;
+		case "maxVal":
+			maxVal = (100 - val.value) / 10;
+			break;
+		case "backgroundColorization":
+			backgroundColor = "#" + val.value.substring(3);
+			break;
 
-    case "interpolate":
-      interpolate = val;
-      break;
-    case "maxVal":
-      maxVal = (100 - val) / 10;
-      break;
-    case "backgroundColorization":
+		case "policeTime":
+			policeTime = val.value;
+			break;
+		case "boldText":
+			policeBold = val.value;
+			break;
+		case "showHour":
+			showHour = val.value;
+			break;
+		case "hourColor":
+			hourColor = "#" + val.value.substring(3);
+			break;
+		case "xHour":
+			xHour = val.value;
+			break;
+		case "yHour":
+			yHour = val.value;
+			break;
+		case "hourSize":
+			hourSize = val.value / 10;
+			break;
+		case "showSecond":
+			showSecond = val.value;
+			break;
+		case "format12":
+			hour_format12 = val.value;
+			break;
+		case "showDate":
+			showDate = val.value;
+			break;
+		case "dateColor":
+			dateColor = "#" + val.value.substring(3);
+			break;
+		case "xDate":
+			xDate = val.value;
+			break;
+		case "yDate":
+			yDate = val.value;
+			break;
+		case "dateSize":
+			dateSize = val.value / 10;
+			break;
+		case "shadow":
+			shadow = val.value;
+			break;
+		case "shadowIntensity":
+			shadowIntensity = val.value;
+			break;
 
-      backgroundColor = val;
+		case "whiteInside":
+			whiteInside = val.value;
+			break;
+		case "cleanLineEnd":
+			cleanLineEnd = val.value;
+			break;
 
-      break;
+		case "shadowWithMusic":
+			shadowWithMusic = val.value;
+			break;
+		case "regenerate":
+			generateRandomAudio();
+			break;
+		case "minimalAudioValue":
+			minimalAudio = val.value / 1000;
+			break;
+		case "spaceBetweenLine":
+			spacing_between_bar = val.value / 100;
+			break;
+		case "addAudioValue":
+			add_audio_value = val.value / 10;
+			break;
+		case "lineAngle":
+			line_angle = val.value / 10;
+			break;
+		case "customGradient":
+			custom_gradient = val.value;
+			generate_canvas_gradiant();
+			break;
+		case "color1":
+			color1 = "#" + val.value.substring(3);
+			generate_canvas_gradiant();
+			break;
+		case "color2":
+			color2 = "#" + val.value.substring(3);
+			generate_canvas_gradiant();
+			break;
+		case "roundMode":
+			round_theme = val.value;
+			break;
+		case "backgroundSelect":
+			addimage(val.value);
+			break;
+		case "backgroundWallpaper":
+			background_colored = !val.value
+			break;
 
-    case "policeHour":
-      policeHour = val;
-      break;
-    case "boldText":
-      policeBold = val;
-      break;
-    case "showHour":
-      showHour = val;
-      break;
-    case "hourColor":
-      hourColor = val;
-      break;
-    case "xHour":
-      xHour = val;
-      break;
-    case "yHour":
-      yHour = val;
-      break;
-    case "hourSize":
-      hourSize = val / 10;
-      break;
-    case "showSecond":
-      showSecond = val;
-      break;
-    case "format12":
-      hour_format12 = val;
-      break;
-    case "showDate":
-      showDate = val;
-      break;
-    case "dateColor":
-      dateColor = val;
-      break;
-    case "xDate":
-      xDate = val;
-      break;
-    case "yDate":
-      yDate = val;
-      break;
-    case "dateSize":
-      dateSize = val / 10;
-      break;
-    case "shadow":
-      shadow = val;
-      break;
-    case "shadowIntensity":
-      shadowIntensity = val;
-      break;
+		case "equalizer":
+			equalizer = val.value;
+			break;
 
-    case "whiteInside":
-      whiteInside = val;
-      break;
-    case "cleanLineEnd":
-      cleanLineEnd = val;
-      break;
+		case "reverseAudio":
+			reverse_audio = val.value;
+			break;
+		case "hideNoMusic":
+			hide_no_music = val.value;
+			break;
+		case "showYear":
+			showYear = val.value;
+			break;
 
-    case "shadowWithMusic":
-      shadowWithMusic = val;
-      break;
-    case "regenerate":
-      generateRandomAudio();
-      break;
-    case "minimalAudioValue":
-      minimalAudio = val / 1000;
-      break;
-    case "spaceBetweenLine":
-      spacing_between_bar = val / 100;
-      break;
-    case "addAudioValue":
-      add_audio_value = val / 10;
-      break;
-    case "lineAngle":
-      line_angle = val / 10;
-      break;
-    case "customGradient":
-      custom_gradient = val;
-      generate_canvas_gradiant();
-      break;
-    case "color1":
-      color1 = val;
-      generate_canvas_gradiant();
-      break;
-    case "color2":
-      color2 = val;
-      generate_canvas_gradiant();
-      break;
-    case "roundMode":
-      round_theme = val;
-      break;
-    case "backroundSelect":
-      addimage(val);
-      break;
-    case "backroundWallpaper":
-      backround_colored = !val
-      break;
+		case "showDayName":
+			showDayName = val.value;
+			break;
+		case "showDayNumber":
+			showDayNumber = val.value;
+			break
+		case "shortDate":
+			shortDate = val.value;
+			break
+		case "activeMusicVizualizer":
+			view_spectrum = val.value;
+			break
+		case "xMusicVizualizer":
+			x_spectrum = val.value;
+			break
 
-    case "equalizer":
-      equalizer = val;
-      break;
+		case "yMusicVizualizer":
+			y_spectrum = val.value;
+			break
 
-    case "ReverseAudio":
-      reverse_audio = val;
-      break;
-    case "HideNoMusic":
-      hide_no_music = val;
-      break;
-    case "showYear":
-      showYear = val;
-      break;
+		default:
+			break;
 
-    case "showDayName":
-      showDayName = val;
-      break;
-    case "showDayNumber":
-      showDayNumber = val;
-      break
-    case "shortDate":
-      shortDate = val;
-      break
-    case "showUpdateNotif":
-      showUpdateNotif = val;
-      break
-    case "activeMusicVizualizer":
-      view_spectrum = val;
-      break
-    case "xMusicVizualizer":
-      x_spectrum = val;
-      break
-
-    case "yMusicVizualizer":
-      y_spectrum = val;
-      break
-
-    default:
-
-      break;
-
-  }
+	}
 }
 
 function addimage(path) {
-  background_image = new Image();
-  background_image.src = path;
+	background_image = new Image();
+	background_image.src = "backgrounds//" + path;
 
-  background_image.onload = function () {
-    // Dessiner l'image sur tout le canvas
-    if (!backround_colored) {
-      ctx.drawImage(background_image, 0, 0, canvas.width, canvas.height);
-    }
-  };
+	background_image.onload = function() {
+		// Dessiner l'image sur tout le canvas
+		if (!background_colored) {
+			ctx.drawImage(background_image, 0, 0, canvas.width, canvas.height);
+		}
+	};
 }
 
 function equalize(audioArray) {
-  let mid = Math.floor((audioArray.length / 4) * 3); // Correction de int
-  let value = equalizer / mid; // Déclaration correcte de la variable
+	let mid = Math.floor((audioArray.length / 4) * 3); // Correction de int
+	let value = equalizer / mid; // Déclaration correcte de la variable
 
+	for (let i = mid; i < audioArray.length; i++) {
+		audioArray[i] = audioArray[i] * (value * (i - mid));
 
+	}
 
-  for (let i = mid; i < audioArray.length; i++) {
-    audioArray[i] = audioArray[i] * (value * (i - mid));
-
-  }
-
-  return audioArray;
-
+	return audioArray;
 }
 
 function interpolateAudioArray(audioArray) {
-  let interpolatedArray = [];
+	let interpolatedArray = [];
 
-  for (let i = 0; i < audioArray.length - 1; i++) {
+	for (let i = 0; i < audioArray.length - 1; i++) {
+		interpolatedArray.push(audioArray[i]);
+		const average = (audioArray[i] + audioArray[i + 1]) / 2;
+		interpolatedArray.push(average);
+	}
 
+	interpolatedArray.push(audioArray[audioArray.length - 1]);
 
-    interpolatedArray.push(audioArray[i]);
-    const average = (audioArray[i] + audioArray[i + 1]) / 2;
-    interpolatedArray.push(average);
-  }
-
-  interpolatedArray.push(audioArray[audioArray.length - 1]);
-
-  return interpolatedArray;
+	return interpolatedArray;
 }
 
-
 function getCurrentTime() {
-  const now = new Date();
-  let hours = now.getHours();
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
+	const now = new Date();
+	let hours = now.getHours();
+	const minutes = String(now.getMinutes()).padStart(2, '0');
+	const seconds = String(now.getSeconds()).padStart(2, '0');
 
-  let period = ""; // Pour indiquer AM ou PM en format 12 heures
+	let period = ""; // Pour indiquer AM ou PM en format 12 heures
 
-  if (hour_format12) {
-    period = hours >= 12 ? "PM" : "AM";
-    hours = hours % 12 || 12; // Convertit 0h à 12h et 13h à 1h
-  }
+	if (hour_format12) {
+		period = hours >= 12 ? "PM" : "AM";
+		hours = hours % 12 || 12; // Convertit 0h à 12h et 13h à 1h
+	}
 
-  hours = String(hours).padStart(2, '0'); // Ajout du zéro si nécessaire
+	hours = String(hours).padStart(2, '0'); // Ajout du zéro si nécessaire
 
-  if (showSecond) {
-    return hour_format12
-      ? `${hours}:${minutes}:${seconds} ${period}`
-      : `${hours}:${minutes}:${seconds}`;
-  } else {
-    return hour_format12
-      ? `${hours}:${minutes} ${period}`
-      : `${hours}:${minutes}`;
-  }
+	if (showSecond) {
+		return hour_format12 ?
+			`${hours}:${minutes}:${seconds} ${period}` :
+			`${hours}:${minutes}:${seconds}`;
+	} else {
+		return hour_format12 ?
+			`${hours}:${minutes} ${period}` :
+			`${hours}:${minutes}`;
+	}
 }
 
 function getFormattedDate() {
-  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const months = [
-    "January", "February", "March", "April", "May", "June",
-    "July", "August", "September", "October", "November", "December"
-  ];
+	const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+	const months = [
+		"January", "February", "March", "April", "May", "June",
+		"July", "August", "September", "October", "November", "December"
+	];
 
-  const now = new Date();
-  const dayName = days[now.getDay()];
-  const dayNumber = now.getDate();
-  const monthName = months[now.getMonth()];
-  const monthNumber = now.getMonth() + 1;
-  const year = now.getFullYear();
+	const now = new Date();
+	const dayName = days[now.getDay()];
+	const dayNumber = now.getDate();
+	const monthName = months[now.getMonth()];
+	const monthNumber = now.getMonth() + 1;
+	const year = now.getFullYear();
 
+	if (shortDate) {
+		return `${monthNumber.toString().padStart(2, '0')}/${dayNumber.toString().padStart(2, '0')}/${year}`;
+	}
 
-  if (shortDate) {
-    return `${monthNumber.toString().padStart(2, '0')}/${dayNumber.toString().padStart(2, '0')}/${year}`;
-  }
+	let formattedDate = "";
 
+	if (showDayName) formattedDate += `${dayName} `;
+	if (showDayNumber) formattedDate += `${dayNumber} `;
+	formattedDate += monthName;
+	if (showYear) formattedDate += ` ${year}`;
 
-  let formattedDate = "";
-
-  if (showDayName) formattedDate += `${dayName} `;
-  if (showDayNumber) formattedDate += `${dayNumber} `;
-  formattedDate += monthName;
-  if (showYear) formattedDate += ` ${year}`;
-
-  return formattedDate.trim();
+	return formattedDate.trim();
 }
 
-
-
-
 function modifyDefault() {
-  for (let x = 0; x < 120; x++) {
+	for (let x = 0; x < 120; x++) {
 
-    defaultAudioArray[x] += (Math.random() * 0.5) - 0.25;
-  }
+		defaultAudioArray[x] += (Math.random() * 0.5) - 0.25;
+	}
 }
 
 // function addFont(path) {
@@ -450,245 +374,244 @@ function modifyDefault() {
 //     document.body.style.fontFamily = fontName;
 //   });
 // }
+
 function showTime() {
-  if (showHour) {
-    ctx.fillStyle = hourColor;
-    if (policeBold) {
-      ctx.font = `bold ${max_height * 0.3 * hourSize}px ${policeHour}`;
-    }
-    else {
-      ctx.font = `${max_height * 0.3 * hourSize}px ${policeHour}`;
-    }
+	if (showHour) {
+		ctx.fillStyle = hourColor;
+		if (policeBold) {
+			ctx.font = `bold ${max_height * 0.3 * hourSize}px ${policeTime}`;
+		} else {
+			ctx.font = `${max_height * 0.3 * hourSize}px ${policeTime}`;
+		}
 
-    ctx.textAlign = "center"; // Centrer le texte
-    ctx.fillText(getCurrentTime(), (canvas.width * xHour) / 100, (canvas.height * yHour) / 100);
-    //ctx.fillText(backgroundColor, canvas.width / xHour, canvas.width / yHour);
-  }
-  if (showDate) {
+		ctx.textAlign = "center"; // Centrer le texte
+		ctx.fillText(getCurrentTime(), (canvas.width * xHour) / 100, (canvas.height * yHour) / 100);
+		//ctx.fillText(backgroundColor, canvas.width / xHour, canvas.width / yHour);
+	}
+	if (showDate) {
+		ctx.fillStyle = dateColor;
+		if (policeBold) {
+			ctx.font = `bold ${max_height * 0.3 * dateSize}px ${policeTime}`;
+		} else {
+			ctx.font = `${max_height * 0.3 * dateSize}px ${policeTime}`;
+		}
+		ctx.textAlign = "center"; // Centrer le texte
+		ctx.fillText(getFormattedDate(), (canvas.width * xDate) / 100, (canvas.width * yDate) / 100);
+		//ctx.fillText(backgroundColor, canvas.width / xHour, canvas.width / yHour);
 
-    ctx.fillStyle = dateColor;
-    if (policeBold) {
-      ctx.font = `bold ${max_height * 0.3 * dateSize}px ${policeHour}`;
-    }
-    else {
-      ctx.font = `${max_height * 0.3 * dateSize}px ${policeHour}`;
-    }
-    ctx.textAlign = "center"; // Centrer le texte
-    ctx.fillText(getFormattedDate(), (canvas.width * xDate) / 100, (canvas.width * yDate) / 100);
-    //ctx.fillText(backgroundColor, canvas.width / xHour, canvas.width / yHour);
-
-  }
+	}
 }
 
 function clearCanvas() {
-  ctx.fillStyle = backgroundColor;
-  //ctx.fillRect(0, 0, canvas.width, canvas.height);
-  //ctx.drawImage(background_image, 0, 0, canvas.width, canvas.height);
-  if (backround_colored) {
+	ctx.fillStyle = backgroundColor;
+	//ctx.fillRect(0, 0, canvas.width, canvas.height);
+	//ctx.drawImage(background_image, 0, 0, canvas.width, canvas.height);
+	if (background_colored) {
 
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-  }
-  else {
-    ctx.drawImage(background_image, 0, 0, canvas.width, canvas.height);
-  }
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+	} else {
+		ctx.drawImage(background_image, 0, 0, canvas.width, canvas.height);
+	}
 
 }
 
-function livelyAudioListener(audioArray) {
-  var averageAudio = 0.5;
-  var count = 0;
+function SucroseAudioData(obj) {
+	var audioArray = obj.Data;
 
-  if (reverse_audio) {
-    audioArray.reverse();
-  }
-  for (let x = 0; x < audioArray.length; x++) { count += audioArray[x] }
-  if (count == 0) {
-    if (hide_no_music) {
-      clearCanvas();
-      showTime();
+	var averageAudio = 0.5;
+	var count = 0;
 
-      return;
-    }
-    else { audioArray = defaultAudioArray; }
+	if (reverse_audio) {
+		audioArray.reverse();
+	}
+	for (let x = 0; x < audioArray.length; x++) {
+		count += audioArray[x]
+	}
+	if (count == 0) {
+		if (hide_no_music) {
+			clearCanvas();
+			showTime();
 
-  }
-  else {
-    averageAudio = (count / audioArray.length);
-    if (equalizer != 0) {
-      audioArray = equalize(audioArray);
-    }
+			return;
+		} else {
+			audioArray = defaultAudioArray;
+		}
 
-  }
+	} else {
+		averageAudio = (count / audioArray.length);
+		if (equalizer != 0) {
+			audioArray = equalize(audioArray);
+		}
 
-  if (interpolate) {
-    audioArray = interpolateAudioArray(audioArray);
-  }
+	}
 
-  const offSet = (vizWidth / audioArray.length);
-  clearCanvas();
+	if (interpolate) {
+		audioArray = interpolateAudioArray(audioArray);
+	}
 
-  if (view_spectrum) {
-    if (shadow) {
-      ctx.shadowBlur = shadowIntensity;
-      ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
-    }
+	const offSet = (vizWidth / audioArray.length);
+	clearCanvas();
 
-    midY = (canvas.height*y_spectrum )/ 100
-    for (let x = 0; x < audioArray.length; x++) {
-      let audioValue = audioArray[x];
+	if (view_spectrum) {
+		if (shadow) {
+			ctx.shadowBlur = shadowIntensity;
+			ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
+		}
 
-      if (audioValue < minimalAudio) {
-        audioValue = minimalAudio;
-      }
+		midY = (canvas.height * y_spectrum) / 100
+		for (let x = 0; x < audioArray.length; x++) {
+			let audioValue = audioArray[x];
 
-      const barHeight = (audioValue / maxVal) * max_height + add_audio_value;
-      const posX = startPos + x * offSet;
-      const color = colors[Math.floor(posX)];
+			if (audioValue < minimalAudio) {
+				audioValue = minimalAudio;
+			}
 
-      if (shadow) {
-        ctx.shadowColor = color
-        if (shadowWithMusic) {
-          ctx.shadowBlur = shadowIntensity * (audioValue + averageAudio)
-        }
+			const barHeight = (audioValue / maxVal) * max_height + add_audio_value;
+			const posX = startPos + x * offSet;
+			const color = colors[Math.floor(posX)];
 
-      };
+			if (shadow) {
+				ctx.shadowColor = color
+				if (shadowWithMusic) {
+					ctx.shadowBlur = shadowIntensity * (audioValue + averageAudio)
+				}
 
-      let invert_spacing_between_bar = 1 - spacing_between_bar
+			};
 
-      lineGradient = ctx.createLinearGradient(0, midY, 0, midY - barHeight);
-      if (whiteInside) { lineGradient.addColorStop(0.01, "white"); }
-      lineGradient.addColorStop(0.05, color);
-      if (cleanLineEnd) { lineGradient.addColorStop(0.7, backgroundColor); }
+			let invert_spacing_between_bar = 1 - spacing_between_bar
 
-      ctx.fillStyle = lineGradient;
-      if (round_theme) {
-        /////////////////////////////////////////HAUT
-        ctx.beginPath();
-        ctx.moveTo(posX + offSet * spacing_between_bar, midY);
+			lineGradient = ctx.createLinearGradient(0, midY, 0, midY - barHeight);
+			if (whiteInside) {
+				lineGradient.addColorStop(0.01, "white");
+			}
+			lineGradient.addColorStop(0.05, color);
+			if (cleanLineEnd) {
+				lineGradient.addColorStop(0.7, backgroundColor);
+			}
 
-        // Rounded bottom-left corner
-        ctx.lineTo(posX + offSet * spacing_between_bar, midY - barHeight * 0.9);
-        ctx.arcTo(
-          posX + offSet * spacing_between_bar,
-          midY - barHeight,
-          posX + offSet / 2,
-          midY - barHeight,
-          line_angle
-        );
+			ctx.fillStyle = lineGradient;
+			if (round_theme) {
+				/////////////////////////////////////////HAUT
+				ctx.beginPath();
+				ctx.moveTo(posX + offSet * spacing_between_bar, midY);
 
-        // Top of the bar
-        ctx.lineTo(posX + offSet / 2, midY - barHeight);
+				// Rounded bottom-left corner
+				ctx.lineTo(posX + offSet * spacing_between_bar, midY - barHeight * 0.9);
+				ctx.arcTo(
+					posX + offSet * spacing_between_bar,
+					midY - barHeight,
+					posX + offSet / 2,
+					midY - barHeight,
+					line_angle
+				);
 
-        // Rounded top-right corner
-        ctx.arcTo(
-          posX + offSet * invert_spacing_between_bar, // Symmetric spacing
-          midY - barHeight,
-          posX + offSet * invert_spacing_between_bar,
-          midY - barHeight * 0.9,
-          line_angle
-        );
+				// Top of the bar
+				ctx.lineTo(posX + offSet / 2, midY - barHeight);
 
-        // Return to base with rounded bottom-right corner
-        ctx.lineTo(posX + offSet * invert_spacing_between_bar, midY);
-        if (whiteInside) {
-          ctx.closePath();
-          ctx.fill();
-        }
+				// Rounded top-right corner
+				ctx.arcTo(
+					posX + offSet * invert_spacing_between_bar, // Symmetric spacing
+					midY - barHeight,
+					posX + offSet * invert_spacing_between_bar,
+					midY - barHeight * 0.9,
+					line_angle
+				);
 
+				// Return to base with rounded bottom-right corner
+				ctx.lineTo(posX + offSet * invert_spacing_between_bar, midY);
+				if (whiteInside) {
+					ctx.closePath();
+					ctx.fill();
+				}
 
-        /////////////////////////////////////////BAS
+				/////////////////////////////////////////BAS
 
-        lineGradient = ctx.createLinearGradient(0, midY, 0, midY + barHeight);
-        if (whiteInside) { lineGradient.addColorStop(0.02, "white"); }
-        lineGradient.addColorStop(0.05, color);
-        if (cleanLineEnd) { lineGradient.addColorStop(0.7, backgroundColor); }
-        ctx.fillStyle = lineGradient;
+				lineGradient = ctx.createLinearGradient(0, midY, 0, midY + barHeight);
+				if (whiteInside) {
+					lineGradient.addColorStop(0.02, "white");
+				}
+				lineGradient.addColorStop(0.05, color);
+				if (cleanLineEnd) {
+					lineGradient.addColorStop(0.7, backgroundColor);
+				}
+				ctx.fillStyle = lineGradient;
 
-        if (whiteInside) { ctx.beginPath(); }
-        // ctx.beginPath();
-        ctx.moveTo(posX + offSet * spacing_between_bar, midY);
+				if (whiteInside) {
+					ctx.beginPath();
+				}
+				// ctx.beginPath();
+				ctx.moveTo(posX + offSet * spacing_between_bar, midY);
 
-        // Rounded bottom-left corner
-        ctx.lineTo(posX + offSet * spacing_between_bar, midY + barHeight * 0.9);
-        ctx.arcTo(
-          posX + offSet * spacing_between_bar,
-          midY + barHeight,
-          posX + offSet / 2,
-          midY + barHeight,
-          line_angle
-        );
+				// Rounded bottom-left corner
+				ctx.lineTo(posX + offSet * spacing_between_bar, midY + barHeight * 0.9);
+				ctx.arcTo(
+					posX + offSet * spacing_between_bar,
+					midY + barHeight,
+					posX + offSet / 2,
+					midY + barHeight,
+					line_angle
+				);
 
-        // Top of the bar
-        ctx.lineTo(posX + offSet / 2, midY + barHeight);
+				// Top of the bar
+				ctx.lineTo(posX + offSet / 2, midY + barHeight);
 
-        // Rounded top-right corner
-        ctx.arcTo(
-          posX + offSet * invert_spacing_between_bar, // Symmetric spacing
-          midY + barHeight,
-          posX + offSet * invert_spacing_between_bar,
-          midY + barHeight * 0.9,
-          line_angle
-        );
+				// Rounded top-right corner
+				ctx.arcTo(
+					posX + offSet * invert_spacing_between_bar, // Symmetric spacing
+					midY + barHeight,
+					posX + offSet * invert_spacing_between_bar,
+					midY + barHeight * 0.9,
+					line_angle
+				);
 
-        // Return to base with rounded bottom-right corner
-        ctx.lineTo(posX + offSet * (1 - spacing_between_bar), midY);
+				// Return to base with rounded bottom-right corner
+				ctx.lineTo(posX + offSet * (1 - spacing_between_bar), midY);
 
-        ctx.closePath();
-        ctx.fill();
+				ctx.closePath();
+				ctx.fill();
+			} else {
+				ctx.beginPath();
+				ctx.moveTo(posX, midY);
+				//ctx.lineTo((posX + offSet / 5)-plusWidth, midY - barHeight*0.01); 
+				ctx.lineTo((posX + offSet / 5), midY - barHeight * 0.05);
+				ctx.lineTo(posX + offSet / 2, midY - barHeight);
+				ctx.lineTo((posX + (offSet / 5) * 4), midY - barHeight * 0.05);
+				//ctx.lineTo((posX + (offSet / 5)*4)+plusWidth, midY - barHeight*0.01); 
 
+				ctx.lineTo(posX + offSet, midY);
+				ctx.closePath();
+				ctx.fill();
+				//ctx.fillRect(posX, midY - barHeight, offSet*0.7 , barHeight);
 
-      }
-      else {
-        ctx.beginPath();
-        ctx.moveTo(posX, midY);
-        //ctx.lineTo((posX + offSet / 5)-plusWidth, midY - barHeight*0.01); 
-        ctx.lineTo((posX + offSet / 5), midY - barHeight * 0.05);
-        ctx.lineTo(posX + offSet / 2, midY - barHeight);
-        ctx.lineTo((posX + (offSet / 5) * 4), midY - barHeight * 0.05);
-        //ctx.lineTo((posX + (offSet / 5)*4)+plusWidth, midY - barHeight*0.01); 
+				lineGradient = ctx.createLinearGradient(0, midY, 0, midY + barHeight);
+				if (whiteInside) {
+					lineGradient.addColorStop(0.02, "white");
+				}
+				lineGradient.addColorStop(0.05, color);
+				if (cleanLineEnd) {
+					lineGradient.addColorStop(0.7, backgroundColor);
+				}
 
-        ctx.lineTo(posX + offSet, midY);
-        ctx.closePath();
-        ctx.fill();
-        //ctx.fillRect(posX, midY - barHeight, offSet*0.7 , barHeight);
+				ctx.fillStyle = lineGradient;
+				//ctx.fillRect(posX, midY, offSet *0.7, barHeight); 
+				ctx.beginPath();
+				ctx.moveTo(posX, midY);
+				//ctx.lineTo((posX + offSet / 5)-plusWidth, midY + barHeight*0.01); 
+				ctx.lineTo((posX + offSet / 5), midY + barHeight * 0.05);
+				ctx.lineTo(posX + offSet / 2, midY + barHeight);
+				ctx.lineTo((posX + (offSet / 5) * 4), midY + barHeight * 0.05);
+				//ctx.lineTo((posX + (offSet / 5)*4)+plusWidth, midY + barHeight*0.01); 
 
-        lineGradient = ctx.createLinearGradient(0, midY, 0, midY + barHeight);
-        if (whiteInside) { lineGradient.addColorStop(0.02, "white"); }
-        lineGradient.addColorStop(0.05, color);
-        if (cleanLineEnd) { lineGradient.addColorStop(0.7, backgroundColor); }
+				ctx.lineTo(posX + offSet, midY);
+				ctx.closePath();
+				ctx.fill();
+			}
+		}
 
+		if (shadow) {
+			ctx.shadowBlur = 0;
+		}
+	}
 
-
-        ctx.fillStyle = lineGradient;
-        //ctx.fillRect(posX, midY, offSet *0.7, barHeight); 
-        ctx.beginPath();
-        ctx.moveTo(posX, midY);
-        //ctx.lineTo((posX + offSet / 5)-plusWidth, midY + barHeight*0.01); 
-        ctx.lineTo((posX + offSet / 5), midY + barHeight * 0.05);
-        ctx.lineTo(posX + offSet / 2, midY + barHeight);
-        ctx.lineTo((posX + (offSet / 5) * 4), midY + barHeight * 0.05);
-        //ctx.lineTo((posX + (offSet / 5)*4)+plusWidth, midY + barHeight*0.01); 
-
-        ctx.lineTo(posX + offSet, midY);
-        ctx.closePath();
-        ctx.fill();
-      }
-    }
-
-
-
-    if (shadow) {
-      ctx.shadowBlur = 0;
-
-    }
-  }
-
-  showTime();
-
-  if (updateAvailable && showUpdateNotif) {
-    ctx.fillStyle = "rgb(255,255,255)";
-    ctx.font = `bold 20px ${policeHour}`;
-    ctx.fillText("Update Available", canvas.width - 100, canvas.height - 70);
-  }
-
+	showTime();
 }
