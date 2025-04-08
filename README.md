@@ -9,6 +9,12 @@
 # Multiple Parameters (36) :
 
 
+## Background
+
+`Background Wallpaper` : Switch the background to an image
+
+`Background Image` : Set the background image. If you the a very high quality it can take a bit of time
+
 ## Color Parameters
 
 `Background Color` : Change the background color 
@@ -17,15 +23,11 @@
 
 `White Light Inside` : Place a white color at the base of the spectrum
 
-## Background
-
-`Background Wallpaper` : Switch the background to an image
-
-`Background Image` : Set the background image. If you the a very high quality it can take a bit of time
-
 ## Ray Parameters
 
 `Show Music Visualizer` : Clean the spectrum ray, better when you don't use shadow
+
+`Clean Line End` : Do not use with shadow
 
 `Interpolate` : Do an interpolation of the audio value for more ray
 
@@ -35,11 +37,13 @@
 
 `Reverse Audio` : Reverse the audio values
 
-`Minimal Audio` : Set the minimum audio value for all ray
+`Minimal Audio Value` : Set the minimum audio value for all ray
 
 `Line Width` : In rounded mode that change the width of all ray
 
 `Intensity` : Change spectre intensity
+
+`Add Audio Value` : Add the minimum audio value for all ray
 
 `Angle of the Line` : Change the intensity of angle in rounded mode (Can bug)
 
