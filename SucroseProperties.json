@@ -1,0 +1,278 @@
+{
+  "PropertyListener": "SucrosePropertyListener('{0}', {1});",
+  "PropertyList": {
+    "labelColor": {
+      "type": "label",
+      "value": "Color Parameters"
+    },
+    "backgroundColorization": {
+      "text": "Background",
+      "type": "colorpicker",
+      "value": "#FF000000"
+    },
+    "customGradient": {
+      "text": "Custom Gradient",
+      "type": "checkbox",
+      "value": false
+    },
+    "color1": {
+      "text": "Color Begin",
+      "type": "colorpicker",
+      "value": "#FFFFA903"
+    },
+    "color2": {
+      "text": "Color End",
+      "type": "colorpicker",
+      "value": "#FF9900FF"
+    },
+    "whiteInside": {
+      "text": "White Light Inside",
+      "type": "checkbox",
+      "value": false
+    },
+    "labelLine": {
+      "type": "label",
+      "value": "Ray Parameters"
+    },
+    "activeMusicVizualizer": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Show Music Vizualizer"
+    },
+    "cleanLineEnd": {
+      "text": "Clean Line End (Don't use with shadow)",
+      "type": "checkbox",
+      "value": false
+    },
+    "interpolate": {
+      "type": "checkbox",
+      "value": false,
+      "text": "Interpolate (More Line)"
+    },
+    "roundMode": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Rounded Mode"
+    },
+    "hideNoMusic": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Hide When No Music"
+    },
+    "reverseAudio": {
+      "type": "checkbox",
+      "value": false,
+      "text": "Reverse Audio"
+    },
+    "minimalAudioValue": {
+      "max": 1000,
+      "min": 0,
+      "step": 1,
+      "text": "Minimal Audio Value",
+      "type": "slider",
+      "value": 0
+    },
+    "spaceBetweenLine": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "Line Width",
+      "type": "slider",
+      "value": 25
+    },
+    "maxVal": {
+      "max": 99,
+      "min": 0,
+      "step": 1,
+      "text": "Intensity",
+      "type": "slider",
+      "value": 60
+    },
+    "addAudioValue": {
+      "max": 500,
+      "min": 0,
+      "step": 1,
+      "text": "Add Audio Value",
+      "type": "slider",
+      "value": 45
+    },
+    "lineAngle": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "Angle of the Line (Rounded Mode)",
+      "type": "slider",
+      "value": 40
+    },
+    "equalizer": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "Increases Treble",
+      "type": "slider",
+      "value": 0
+    },
+    "yMusicVizualizer": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "Y Music Vizualizer",
+      "type": "slider",
+      "value": 52
+    },
+    "labelTime": {
+      "type": "label",
+      "value": "Time Parameters"
+    },
+    "policeTime": {
+      "type": "textbox",
+      "value": "Arial",
+      "text": "Text Font"
+    },
+    "boldText": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Text Bold"
+    },
+    "showHour": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Show Hour"
+    },
+    "hourColor": {
+      "text": "Hour Color",
+      "type": "colorpicker",
+      "value": "#FFFFFFFF"
+    },
+    "hourSize": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "Hour Size",
+      "type": "slider",
+      "value": 10
+    },
+    "xHour": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "X Hour Position",
+      "type": "slider",
+      "value": 51
+    },
+    "yHour": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "Y Hour Position",
+      "type": "slider",
+      "value": 54
+    },
+    "showSecond": {
+      "type": "checkbox",
+      "value": false,
+      "text": "Show Seconds"
+    },
+    "format12": {
+      "type": "checkbox",
+      "value": false,
+      "text": "12 Hour Clock Format"
+    },
+    "showDate": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Show Date"
+    },
+    "dateColor": {
+      "text": "Date Color",
+      "type": "colorpicker",
+      "value": "#FFFFFFFF"
+    },
+    "dateSize": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "Date Size",
+      "type": "slider",
+      "value": 3
+    },
+    "xDate": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "X Date Position",
+      "type": "slider",
+      "value": 51
+    },
+    "yDate": {
+      "max": 100,
+      "min": 0,
+      "step": 1,
+      "text": "Y Date Position",
+      "type": "slider",
+      "value": 34
+    },
+    "showDayName": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Show Day Name"
+    },
+    "showDayNumber": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Show Day Number"
+    },
+    "showYear": {
+      "type": "checkbox",
+      "value": false,
+      "text": "Show Year"
+    },
+    "shortDate": {
+      "type": "checkbox",
+      "value": false,
+      "text": "Date Format MM/DD/AAAA"
+    },
+    "labelShadow": {
+      "type": "label",
+      "value": "Shadow Parameters"
+    },
+    "shadow": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Shadow"
+    },
+    "shadowIntensity": {
+      "max": 500,
+      "min": 0,
+      "step": 1,
+      "text": "Shadow Intensity (Need Good Performance)",
+      "type": "slider",
+      "value": 30
+    },
+    "shadowWithMusic": {
+      "type": "checkbox",
+      "value": true,
+      "text": "The stronger the intensity, the stronger the shadow will be",
+      "help": "The stronger the intensity, the stronger the shadow will be"
+    },
+    "backgroundWallpaper": {
+      "type": "checkbox",
+      "value": true,
+      "text": "Background Wallpaper"
+    },
+    "backgroundSelect": {
+      "title": "Select Background Image",
+      "type": "filedropdown",
+      "value": "lakeview.png",
+      "text": "Background (.jpg, .png, .webm, .gif)",
+      "desc": "Image Files",
+      "filter": "*.jpg|*.jpeg|*.png|*.webp|*.gif",
+      "folder": "backgrounds"
+    },
+    "regenerate": {
+      "text": "Regenerate Random Spectre",
+      "type": "button",
+      "value": "Regenerate"
+    }
+  }
+}
