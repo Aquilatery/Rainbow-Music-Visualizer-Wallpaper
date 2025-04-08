@@ -93,8 +93,6 @@
 
 `Regenerate Random Spectre` : Regenerate the default spectre when there are no Music
 
-`Update Notif` : Show a "Update Available" at the right back corner of the screen when a update is available
-
 # Previews
 
 <img src="/previews/preview1.png" width="400" /><img src="/previews/preview4.png" width="400" />
