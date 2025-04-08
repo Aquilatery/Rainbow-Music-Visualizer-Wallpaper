@@ -11,21 +11,21 @@
 
 ## Color Parameters
 
-`Background Color` : Change the backround color 
+`Background Color` : Change the background color 
 
 `Custom Gradient` : The Gradient of the vizualizer is set by you with `Color 1` and `Color 2`
 
-`White Inside` : Place a white color at the base of the spectrum
+`White Light Inside` : Place a white color at the base of the spectrum
 
-## Line Parameters
+## Ray Parameters
 
-`Clean Line End` : Clean the spectrum ray, better when you don't use shadow
+`Show Music Visualizer` : Clean the spectrum ray, better when you don't use shadow
 
 `Interpolate` : Do an interpolation of the audio value for more ray
 
 `Rounded Mode` : The ray are solid with rounded bordure
 
-`Hide when no music` : Hide the Spectrum when no music
+`Hide When No music` : Hide the Spectrum when no music
 
 `Reverse Audio` : Reverse the audio values
 
@@ -37,7 +37,7 @@
 
 `Angle of the Line` : Change the intensity of angle in rounded mode (Can bug)
 
-`Increases treble` : Increase the intensity of trebles value to balance
+`Increases Treble` : Increase the intensity of trebles value to balance
 
 `Y Music Vizualizer` : Change the Y coordinate of the music spectrum
 
@@ -45,7 +45,7 @@
 
 `Text Font` : Change the text font
 
-`Text bold` : Switch text to bold
+`Text Bold` : Switch text to bold
 
 `Show Hour` : Show the hour (logic)
 
@@ -87,9 +87,9 @@
 
 ## Other
 
-`Backround wallpaper` : Switch the backround to an image
+`Background Wallpaper` : Switch the background to an image
 
-`Backround Drop` : Set the backround image. If you the a very high quality it can take a bit of time
+`Background Image` : Set the background image. If you the a very high quality it can take a bit of time
 
 `Regenerate Random Spectre` : Regenerate the default spectre when there are no Music
 
