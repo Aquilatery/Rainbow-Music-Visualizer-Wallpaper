@@ -47,7 +47,7 @@
 
 `Y Music Vizualizer` : Change the Y coordinate of the music spectrum
 
-## Date and Hour Parameters
+## Time Parameters
 
 `Text Font` : Change the text font
 
@@ -55,9 +55,9 @@
 
 `Show Hour` : Show the hour (logic)
 
-`Hour Size` : Change the hour size (idem)
-
 `Hour Color` : Change the hour color (.)
+
+`Hour Size` : Change the hour size (idem)
 
 `X and Y Hour Position` : Change the hour position on screen
 
@@ -65,21 +65,21 @@
 
 `12 Hour Clock Format` : Change the clock format to 12 hour
 
-`Show Date` : Show the date 
+`Show Date` : Show the date
 
-`Date Size` : Change the date size 
+`Date Color` : Change the date color
 
-`Date Color` : Change the date color 
+`Date Size` : Change the date size
 
 `X and Y Date Position` : Change the date position on screen
 
-`Show Year` : Show the year with date
-
-`Show Day Name` : Show the day name with date (ex: Monday) 
+`Show Day Name` : Show the day name with date (ex: Monday)
 
 `Show Day Number` : Show the day number with date
 
-`Format MM/DD/AA` : Set the day format as MM/DD/AA
+`Show Year` : Show the year with date
+
+`Date Format MM/DD/AAAA` : Set the day format as MM/DD/AA
 
 ## Shadow Parameters
 
@@ -87,9 +87,9 @@
 
 `Shadow Intensity` : The shadow has more power (Need Performance when high)
 
-`Shadow with Music` : The shadow has more power when the music is high
+`Shadow With Music` : The shadow has more power when the music is high
 
-## Other
+## Others
 
 `Regenerate Random Spectre` : Regenerate the default spectre when there are no Music
 
